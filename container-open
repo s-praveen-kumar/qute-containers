@@ -35,5 +35,5 @@ then
 	qutebrowser -B "$BASE_DIR" -C "$CONFIG_FILE" -s window.title_format " {perc}[$CONTAINER_NAME]{title_sep}{current_title}" "$URL"
 else
 	# Send an error if given container doesn't exist
-	echo "message-error \"Container does not exist. Create using container-add\"" >> $QUTE_FIFO
+	send_msg "error" "Container does not exist. Create using container-add"
 fi

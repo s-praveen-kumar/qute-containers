@@ -8,7 +8,7 @@ set -e
 # If container name is not passed, signal an error
 if [ $# -eq 0 ] 
 then
-	echo "message-error \"Usage: container-rm <container-name>\"" >> $QUTE_FIFO
+	send_msg "error" "Usage: container-rm <container-name>"
 	exit 1
 fi
 
@@ -22,9 +22,9 @@ then
 
 	# Remove from list
 	echo "$(grep -vx "$CONTAINER_NAME" "$CONTAINER_LIST")" > "$CONTAINER_LIST"
-	echo "message-info \"Container Removed\"" >> $QUTE_FIFO
+	send_msg "info" "Container Removed"
 else
-	echo "message-error \"Container doesn't exists\"" >> $QUTE_FIFO
+	send_msg "error" "Container doesn't exists"
 	exit 1
 fi
 

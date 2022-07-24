@@ -26,3 +26,26 @@ container_exists ()
 	test $(grep -xc "$1" "$CONTAINER_LIST") -ge 1
 	return $?
 }
+
+# Helper function to output messages
+send_msg ()
+{
+	# If QUTE_FIFO is defined, send message-* command to qutebrowser.
+	# Else output to stdout / stderr
+	if test -n "$QUTE_FIFO"
+	then
+		if test $1 = "info"
+		then
+			printf "message-info \"%s\"\n" "$2" >> $QUTE_FIFO
+		else
+			printf "message-error \"%s\"\n" "$2" >> $QUTE_FIFO
+		fi
+	else
+		if test $1 = "info"
+		then
+			echo "$2" >> /dev/stdout
+		else
+			echo "$2" >> /dev/stderr
+		fi
+	fi
+}

@@ -8,7 +8,7 @@ set -e
 # If container name is not passed, signal an error
 if [ $# -eq 0 ] 
 then
-	echo "message-error \"Usage: container-add <container-name>\"" >> $QUTE_FIFO
+	send_msg "error" "Usage: container-add <container-name>"
 	exit 1
 fi
 
@@ -16,7 +16,7 @@ CONTAINER_NAME="$1"
 # Check if container already exists
 if container_exists "$CONTAINER_NAME"
 then
-	echo "message-error \"Container already exists\"" >> $QUTE_FIFO
+	send_msg "error" "Container already exists"
 	exit 1
 fi
 
@@ -26,4 +26,4 @@ echo "$CONTAINER_NAME" >> $CONTAINER_LIST
 # Create base dir
 BASE_DIR="$CONTAINER_BASE/$CONTAINER_NAME"
 mkdir -p "$BASE_DIR"
-echo "message-info \"Container added\"" >> $QUTE_FIFO
+send_msg "info" "Container added"

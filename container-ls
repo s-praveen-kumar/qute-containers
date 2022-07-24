@@ -6,4 +6,7 @@ set -e
 . $(dirname $0)/containers_config
 
 # Prints a list of Containers
-printf "message-info \"%s\"\n" $(echo "$(cat $CONTAINER_LIST)") > $QUTE_FIFO
+for line in $(cat $CONTAINER_LIST)
+do
+	send_msg "info" "$line"
+done
