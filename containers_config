@@ -18,3 +18,11 @@ DMENU_PROMPT="Choose Container"
 
 # Custom options for dmenu/rofi
 DMENU_FLAGS=-no-custom # -no-custom prevents custom input in rofi
+
+
+# Helper function to check if the container exists
+container_exists ()
+{
+	test $(grep -xc "$1" "$CONTAINER_LIST") -ge 1
+	return $?
+}

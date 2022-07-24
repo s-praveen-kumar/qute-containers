@@ -1,0 +1,29 @@
+#!/bin/sh
+# Copyright (c) 2022 Praveen Kumar S
+set -e
+
+# Include config
+. $(dirname $0)/containers_config
+
+# If container name is not passed, signal an error
+if [ $# -eq 0 ] 
+then
+	echo "message-error \"Usage: container-add <container-name>\"" >> $QUTE_FIFO
+	exit 1
+fi
+
+CONTAINER_NAME="$1"
+# Check if container already exists
+if container_exists "$CONTAINER_NAME"
+then
+	echo "message-error \"Container already exists\"" >> $QUTE_FIFO
+	exit 1
+fi
+
+# Add container to list
+echo "$CONTAINER_NAME" >> $CONTAINER_LIST
+
+# Create base dir
+BASE_DIR="$CONTAINER_BASE/$CONTAINER_NAME"
+mkdir -p "$BASE_DIR"
+echo "message-info \"Container added\"" >> $QUTE_FIFO

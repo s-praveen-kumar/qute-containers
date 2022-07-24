@@ -1,0 +1,9 @@
+#!/bin/sh
+# Copyright (c) 2022 Praveen Kumar S
+set -e
+
+# Include config
+. $(dirname $0)/containers_config
+
+# Prints a list of Containers
+printf "message-info \"%s\"\n" $(echo "$(cat $CONTAINER_LIST)") > $QUTE_FIFO

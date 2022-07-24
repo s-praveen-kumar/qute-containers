@@ -1,0 +1,30 @@
+#!/bin/sh
+# Copyright (c) 2022 Praveen Kumar S
+set -e
+
+# Include config
+. $(dirname $0)/containers_config
+
+# If container name is not passed, signal an error
+if [ $# -eq 0 ] 
+then
+	echo "message-error \"Usage: container-rm <container-name>\"" >> $QUTE_FIFO
+	exit 1
+fi
+
+CONTAINER_NAME="$1"
+# Check if container exists
+if container_exists "$CONTAINER_NAME"
+then
+	# Remove the base dir
+	BASE_DIR="$CONTAINER_BASE/$CONTAINER_NAME"
+	rm -r "$BASE_DIR"
+
+	# Remove from list
+	echo "$(grep -vx "$CONTAINER_NAME" "$CONTAINER_LIST")" > "$CONTAINER_LIST"
+	echo "message-info \"Container Removed\"" >> $QUTE_FIFO
+else
+	echo "message-error \"Container doesn't exists\"" >> $QUTE_FIFO
+	exit 1
+fi
+
